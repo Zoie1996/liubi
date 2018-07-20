@@ -16,7 +16,7 @@ class Config(object):
     SECRET_KEY = 'ix4En7l1Hau10aPq8kv8tuzcVl1s2Zo6eA+5+R+CXor8G3Jo0IJvcj001jz3XuXl'
 
     # flask-sqlalchemy使用的参数
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1:3306/ehome'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@172.20.10.3:3306/wms?charset=utf8'
     # 追踪数据库的修改行为，如果不设置会报警告，不影响代码的执行
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     # 显示sql语句
@@ -53,7 +53,7 @@ class UnitTestConfig(Config):
     """单元测试配置子类"""
     # logging等级
     LOGGIONG_LEVEL = logging.DEBUG
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:root@127.0.0.1:3306/ehome_test'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@127.0.0.1:3306/wms'
 
 
 class ProductionConfig(Config):
@@ -61,7 +61,7 @@ class ProductionConfig(Config):
     # logging等级
     LOGGIONG_LEVEL = logging.WARNING
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:mysql@47.106.93.190:3306/ehome'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:mysql@47.106.93.190:3306/wms'
     REDIS_HOST = '47.106.93.190'
 
 

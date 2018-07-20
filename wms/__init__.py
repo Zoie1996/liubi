@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 
 from config import configs, Config
-from .admin import admin
 
 # 创建数据库对象
 db = SQLAlchemy()
@@ -39,6 +38,7 @@ def create_app(config_name):
     # 使用flask-session扩展，用redis保存app的session数据
     session.init_app(app)
 
+    from .admin import admin
     app.register_blueprint(admin, url_prefix='/admin')
 
     return app

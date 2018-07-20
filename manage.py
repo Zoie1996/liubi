@@ -1,5 +1,5 @@
 # 项目启动文件
-from wms import create_app, db
+from wms import create_app
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from config import Config

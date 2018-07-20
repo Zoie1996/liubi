@@ -6,4 +6,5 @@ admin = Blueprint(
     template_folder='templates',
     static_folder='static'
 )
+print(admin.static_folder)
 from . import views
