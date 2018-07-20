@@ -2,3 +2,4 @@ flask
 flask_script
 flask_sqlalchemy
 pymysql
+flask_session

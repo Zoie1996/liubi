@@ -1,8 +1,15 @@
+# 项目启动文件
+from wms import create_app, db
 from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
+from config import Config
 
-from utils.functions import create_app
+app = create_app('develop')
 
-app = create_app()
-manager = Manager(app=app)
+# Migrate(app, db)
+# manager = Manager(app)
+# manager.add_command('db', MigrateCommand)
+
 if __name__ == '__main__':
-    manager.run()
+    # print(app.url_map)
+    app.run(host=Config.HOST, port=Config.PORT)
