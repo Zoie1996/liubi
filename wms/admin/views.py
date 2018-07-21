@@ -49,7 +49,18 @@ def add_worker():
         return redirect(url_for('admin.worker'))
 
 
-@admin.route('del_worker', methods=['GET'])
+@admin.route('/del_worker/<int:worker_id>', methods=['GET'])
+def del_worker(worker_id):
+    """
+    删除工人
+    :param worker_id: 工人id
+    :return:
+    """
+    worker = Worker.query.get(worker_id)
+    worker.delete()
+    return redirect(url_for('admin.worker'))
+
+
 @admin.route('/worker_info.html', methods=['GET'])
 def worker_info():
     if request.method == 'GET':
