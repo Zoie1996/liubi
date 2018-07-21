@@ -20,8 +20,12 @@ class BaseModel(object):
         # return jsonify(status_code.DATABASE_ERROR)
 
     def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+
 
 
 class Profession(db.Model, BaseModel):
@@ -51,6 +55,7 @@ class Worker(db.Model, BaseModel):
     salary = db.Column(db.Integer)  # 薪资
     bank_card_no = db.Column(db.String(20))  # 银行卡号
     bank_card_name = db.Column(db.String(10))  # 持卡人姓名
+    status = db.Column(db.Integer, default=0)  #  默认 0 存在 1 删除
     pro_id = db.Column(db.Integer, db.ForeignKey('profession.id'))  # 工种
 
     roster = db.relationship('Roster', backref='worker', lazy=True)  # 工天

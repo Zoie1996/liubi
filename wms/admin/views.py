@@ -1,5 +1,6 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 
+from wms import status_code
 from wms.admin.models import Worker, Profession
 from . import admin
 
@@ -21,7 +22,7 @@ def worker():
     """
     if request.method == 'GET':
         # 所用工人列表
-        worker_list = Worker.query.all()
+        worker_list = list(Worker.query.filter_by(status=0))
         # 获取工种信息
         pros = Profession.query.all()
         return render_template('worker.html', worker_list=worker_list, pros=pros)
@@ -49,7 +50,7 @@ def add_worker():
         return redirect(url_for('admin.worker'))
 
 
-@admin.route('/del_worker/<int:worker_id>', methods=['GET'])
+@admin.route('/del_worker/<int:worker_id>', methods=['PATCH'])
 def del_worker(worker_id):
     """
     删除工人
@@ -57,8 +58,9 @@ def del_worker(worker_id):
     :return:
     """
     worker = Worker.query.get(worker_id)
-    worker.delete()
-    return redirect(url_for('admin.worker'))
+    worker.status = 1
+    worker.add_update()
+    return jsonify(status_code.SUCCESS)
 
 
 @admin.route('/worker_info.html', methods=['GET'])

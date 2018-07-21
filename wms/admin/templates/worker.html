@@ -144,9 +144,8 @@
                                                     <button type="button" wid='worker.id'
                                                             class="btn btn-outline btn-success btn-xs">编辑
                                                     </button>
-                                                    <button type="button"
-                                                            class="btn btn-outline btn-danger btn-xs" >
-                                                        <a href="/admin/del_worker/{{ worker.id }}">删除</a>
+                                                    <button type="button" wid="{{ worker.id }}"
+                                                            class="btn btn-outline btn-danger btn-xs del-worker">删除
                                                     </button>
                                                 </td>
                                             </tr>
@@ -217,7 +216,8 @@
                                         </div>
 
                                         <div>
-                                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>添加</strong></button>
+                                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit">
+                                                <strong>添加</strong></button>
                                         </div>
                                     </form>
                                 </div>
@@ -243,4 +243,29 @@
 
 {% block extjs %}
     {{ super() }}
+
+    <script>
+        $(function () {
+            $('.del-worker').on('click', function (evt) {
+                work_id = $(evt.target).attr('wid');
+                if (confirm("确认要删除？")) {
+                    $.ajax({
+                        url: '/admin/del_worker/' + work_id,
+                        type: 'PATCH',
+                        dataType: 'json',
+                        success: function (msg) {
+                            if (msg.code == 200) {
+                                location.href = '/admin/worker.html';
+                            }
+                        },
+                        error: function () {
+                            alert('请求失败');
+                        }
+                    });
+                }
+            })
+        })
+    </script>
+
 {% endblock %}
+
