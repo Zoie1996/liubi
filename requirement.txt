@@ -3,3 +3,5 @@ flask_script
 flask_sqlalchemy
 pymysql
 flask_session
+flask_wtf
+redis

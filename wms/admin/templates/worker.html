@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% block title %}
+    工人管理
+{% endblock %}
+{% block extcss %}
+    <link href="static/css/plugins/iCheck/custom.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div id="wrapper">
+
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="logo-element">
+                            牛逼的劳务管理系统
+                        </div>
+                    </li>
+                    <li class="active">
+                        <a href="index.html"><i class="fa fa-th-large"></i>
+                            <span class="nav-label">用户管理</span>
+                            <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li class="active"><a href="worker.html">工人管理</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">布局</span></a>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
+                                class="fa fa-bars"></i>
+                        </a>
+                        <form role="search" class="navbar-form-custom" action="search_results.html">
+                            <div class="form-group">
+                                <input type="text" placeholder="Search for something..." class="form-control"
+                                       name="top-search" id="top-search">
+                            </div>
+                        </form>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">欢迎来到goopay</span>
+                        </li>
+
+                        <li>
+                            <a href="login.html">
+                                <i class="fa fa-sign-out"></i> 退出登录
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2>工人管理</h2>
+                </div>
+                <div class="col-lg-2">
+
+                </div>
+            </div>
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-sm-5 m-b-xs">
+                                        <a data-toggle="modal" class="btn btn-primary" href="#addworker-form"><i
+                                                class="fa fa-plus"></i>&nbsp;添加</a>
+                                    </div>
+                                    <div class="col-sm-4 m-b-xs">
+                                        <!--放置按钮-->
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group"><input type="text" placeholder="Search"
+                                                                        class="input-sm form-control"> <span
+                                                class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>姓名</th>
+                                            <th>性别</th>
+                                            <th>手机号</th>
+                                            <th>身份证号</th>
+                                            <th>银行卡号</th>
+                                            <th>工种</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for worker in worker_list %}
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" checked class="i-checks" name="input[]">
+                                                </td>
+                                                <td>
+                                                    {{ worker.name }}
+                                                </td>
+                                                <td>
+                                                    {% if worker.sex %}
+                                                        男
+                                                    {% else %}
+                                                        女
+                                                    {% endif %}
+
+                                                </td>
+                                                <td>
+                                                    {{ worker.phone }}
+                                                </td>
+                                                <td>
+                                                    {{ worker.id_card }}
+                                                </td>
+                                                <td>
+                                                    {{ worker.bank_card_no }}
+                                                </td>
+                                                <td>
+                                                    {% for pro in pros %}
+                                                        {% if pro.id == worker.pro_id %}
+                                                            {{ pro.name }}
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                </td>
+                                                <td>
+                                                    <button type="button" wid='worker.id'
+                                                            class="btn btn-outline btn-primary btn-xs">
+                                                        查看
+                                                    </button>
+                                                    <button type="button" wid='worker.id'
+                                                            class="btn btn-outline btn-success btn-xs">编辑
+                                                    </button>
+                                                    <button type="button" wid='worker.id'
+                                                            class="btn btn-outline btn-danger btn-xs">删除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="addworker-form" class="modal fade" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-12"><h3 class="m-t-none m-b">添加工人信息</h3>
+                                    <form role="form" method="post" action="/admin/add_worker">
+                                        <div class="form-group"><label>姓名</label>
+                                            <input type="text" name="name"
+                                                   placeholder="请输入姓名"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="form-group"><label>性别</label>&nbsp;
+                                            <input id="man" type="radio" checked="checked" name="sex" value="1"/>男&nbsp;
+                                            <input id="woman" type="radio" name="sex" value="0"/>女
+                                        </div>
+                                        <div class="form-group"><label>电话号码</label>
+                                            <input type="text" name="phone"
+                                                   placeholder="请输入电话号码"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="form-group"><label>身份证号</label>
+                                            <input type="text" name="id_card"
+                                                   placeholder="请输入身份证号"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="form-group"><label>身份证图片</label>
+                                            <input type="text" name="card_img"
+                                                   placeholder="上传身份证图片"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="form-group"><label>银行卡号</label>
+                                            <input type="text" name="bank_card_no"
+                                                   placeholder="请输入银行卡号"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="form-group"><label>持卡人姓名</label>
+                                            <input type="text" name="bank_card_name"
+                                                   placeholder="请输入持卡人姓名"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="form-group"><label>日薪</label>
+                                            <input type="text" name="salary"
+                                                   placeholder="请输入日薪"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="form-group"><label>工种</label>&nbsp;
+                                            <select name="pro_id">
+                                                {% for pro in pros %}
+                                                    <option value="{{ pro.id }}">{{ pro.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>添加</strong></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="footer">
+                <div class="pull-right">
+                    10GB of <strong>250GB</strong> Free.
+                </div>
+                <div>
+                    <strong>Copyright</strong> ZDD Company &copy; 2018-2100
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extjs %}
+    {{ super() }}
+{% endblock %}

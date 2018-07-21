@@ -294,7 +294,8 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
 }
 .logo-element {
   text-align: center;
-  font-size: 18px;
+  font-size: 28px;
+  font-family:"Kaiti SC";
   font-weight: 600;
   color: white;
   /*display: none;*/
