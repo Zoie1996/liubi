@@ -63,7 +63,28 @@ def del_worker(worker_id):
     return jsonify(status_code.SUCCESS)
 
 
-@admin.route('/worker_info.html', methods=['GET'])
-def worker_info():
-    if request.method == 'GET':
-        pass
+@admin.route('/worker_info/<int:worker_id>', methods=['GET'])
+def worker_info(worker_id):
+    worker = Worker.query.get(worker_id)
+    pro_name = Profession.query.get(worker.pro_id).name
+    pros = Profession.query.all()
+    return jsonify({'code': status_code.OK, 'worker': worker.to_dict(), 'pro_name': pro_name,
+                    'pros': [pro.to_dict() for pro in pros]})
+
+
+@admin.route('/edit_worker/', methods=['POST'])
+def edit_worker():
+    data = request.form.to_dict()
+    worker_id = data['id']
+    worker = Worker.query.get(worker_id)
+    worker.name = data['name']
+    worker.sex = data['sex']
+    worker.phone = data['phone']
+    worker.id_card = data['id_card']
+    worker.card_img = data['card_img']
+    worker.bank_card_no = data['bank_card_no']
+    worker.bank_card_name = data['bank_card_name']
+    worker.salary = data['salary']
+    worker.pro_id = data['pro_id']
+    worker.add_update()
+    return jsonify(code=status_code.OK)
