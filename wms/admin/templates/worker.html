@@ -164,11 +164,14 @@
                 </div>
             </div>
 
-            <div id="addworker-form" class="modal fade" aria-hidden="true">
+            <div id="addworker-form" class="modal fade modal-status" aria-hidden="true">
+
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="row">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
                                 <div class="col-sm-12"><h3 class="m-t-none m-b">添加工人信息</h3>
                                     <form role="form" method="post" action="/admin/add_worker">
                                         <div class="form-group"><label>姓名</label>
@@ -230,95 +233,99 @@
                 </div>
             </div>
 
-            <div id="worker-info-form" class="modal fade" aria-hidden="true">
+            <div id="worker-info-form" class="modal fade modal-status" aria-hidden="true">
+
             </div>
             {% raw %}
+
             <script id="worker-info-temp" type="text/html">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-body worker-info">
-                            <form class="form-horizontal" id="worker-from">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">ID</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name='id' value="{{ worker.id }}"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">姓名</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="name" value="{{ worker.name }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">性别{{ worker.sex }}</label>
-                                    <div class="col-sm-9">
-                                        {{ if worker.sex == '男' }}
-                                        <input id="man" type="radio" checked="checked" name="sex"
-                                               value="1"/>&nbsp;男&nbsp;
-                                        <input id="woman" type="radio" name="sex" value="0"/>&nbsp;女
+                        <div class="modal-body">
+                            <div class="row">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
+                                <div class="col-sm-12"><h3 class="m-t-none m-b">{{ worker.name }}信息</h3>
+                                    <form class="form-horizontal" id="worker-from">
+                                        <div class="form-group">
+                                            <label>ID</label>
+                                            <input type="text" class="form-control" name='id'
+                                                   value="{{ worker.id }}" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>姓名</label>
+                                            <input type="text" class="form-control" name="name"
+                                                   value="{{ worker.name }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>性别{{ worker.sex }}</label>
+                                            {{ if worker.sex == '男' }}
+                                            <input id="man" type="radio" checked="checked" name="sex"
+                                                   value="1"/>&nbsp;男&nbsp;
+                                            <input id="woman" type="radio" name="sex" value="0"/>&nbsp;女
 
-                                        {{ else }}
-                                        <input id="man" type="radio" name="sex" value="1"/>&nbsp;男&nbsp;
-                                        <input id="woman" type="radio" checked="checked" name="sex"
-                                               value="0"/>&nbsp;女
-                                        {{ /if }}
+                                            {{ else }}
+                                            <input id="man" type="radio" name="sex" value="1"/>&nbsp;男&nbsp;
+                                            <input id="woman" type="radio" checked="checked" name="sex"
+                                                   value="0"/>&nbsp;女
+                                            {{ /if }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>电话号码</label>
+                                            <input type="text" class="form-control" name="phone"
+                                                   value="{{ worker.phone }}">
 
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">电话号码</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="phone" value="{{ worker.phone }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">身份证号</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name='id_card'
-                                               value="{{ worker.id_card }}"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">身份证图片</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="card_img"
-                                               value="{{ worker.card_img }}"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">银行卡号</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name='bank_card_no'
-                                               value="{{  worker.bank_card_no }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">持卡人姓名</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name='bank_card_name'
-                                               value="{{ worker.bank_card_name }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">日薪</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="salary"
-                                               value="{{ worker.salary }}"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">工种</label>
-                                    <div class="col-sm-9 pro">
-                                        <input type="text" class="form-control" name="pro_name" value="{{ pro_name  }}">
-                                    </div>
-                                </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>身份证号</label>
+                                            <input type="text" class="form-control" name='id_card'
+                                                   value="{{ worker.id_card }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>身份证图片</label>
+                                            <input type="text" class="form-control" name="card_img"
+                                                   value="{{ worker.card_img }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>银行卡号</label>
+                                            <input type="text" class="form-control" name='bank_card_no'
+                                                   value="{{  worker.bank_card_no }}">
 
-                                <div class="edit_button">
-                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs" style="display: none"
-                                            id="edit_button" onclick="edit_worker()">
-                                        <strong>保存</strong></button>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>持卡人姓名</label>
+                                            <input type="text" class="form-control" name='bank_card_name'
+                                                   value="{{ worker.bank_card_name }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>日薪</label>
+                                            <input type="text" class="form-control" name="salary"
+                                                   value="{{ worker.salary }}">
+                                        </div>
+                                        <div class="form-group pro">
+                                            <label>工种</label>
+                                            <select name="pro_id">
+                                                {{ each pros as pro }}
+                                                {{ if pro.id == worker.pro_id }}
+                                                <option value="{{ pro.id }}" selected>{{ pro.name }}</option>
+                                                {{ else }}
+                                                <option value="{{ pro.id }}">{{ pro.name }}</option>
+                                                {{ /if }}
+                                                {{ /each }}
+                                            </select>
+                                        </div>
+
+                                        <div class="edit_button">
+                                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                    style="display: none"
+                                                    id="edit_button" onclick="edit_worker()">
+                                                <strong>保存</strong></button>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
-                </div>
+
             </script>
             {% endraw %}
 
@@ -342,23 +349,35 @@
     <script src="static/js/template.js"></script>
     <script>
         $(function () {
+
+
             $('.del-worker').on('click', function (evt) {
+                // 获取工人id
                 work_id = $(evt.target).attr('wid');
-                if (confirm("确认要删除？")) {
+                // 显示删除成功的弹框
+                swal({
+                    title: "您确定要删除这条信息吗",
+                    text: "删除后将无法恢复，请谨慎操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "删除",
+                    closeOnConfirm: false
+                }, function () {
                     $.ajax({
                         url: '/admin/del_worker/' + work_id,
                         type: 'PATCH',
                         dataType: 'json',
                         success: function (msg) {
                             if (msg.code == 200) {
-                                location.href = '/admin/worker.html';
+                                window.setInterval(function () {
+                                    location.href = '/admin/worker.html';
+                                }, 600);
                             }
                         },
-                        error: function () {
-                            alert('请求失败');
-                        }
                     });
-                }
+                    swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                });
             });
 
             $('.worker-info').on('click', function (evt) {
@@ -369,15 +388,13 @@
                     dataType: 'json',
                     success: function (msg) {
                         if (msg.code == 200) {
+                            // 渲染页面
                             var worker_html = template('worker-info-temp', {
                                 worker: msg.worker,
-                                pro_name: msg.pro_name
+                                pros: msg.pros
                             });
                             $('#worker-info-form').html(worker_html);
                         }
-                    },
-                    error: function () {
-                        alert('请求失败');
                     },
                 });
             });
@@ -394,20 +411,11 @@
                             // 渲染页面
                             var worker_html = template('worker-info-temp', {
                                 worker: msg.worker,
+                                pros: msg.pros
                             });
                             $('#worker-info-form').html(worker_html);
                             // 展示保存按钮
                             $('#edit_button').show();
-                            pros = msg.pros;
-                            // 展示工种信息
-                            pro_html = '<select name="pro_id">';
-                            for (var i = 0; i < pros.length; i++) {
-                                pro_html += '<option value="' + pros[i].id + '">' + pros[i].name + '</option>';
-                            }
-                            pro_html += '</select>';
-                            $('.pro').html(pro_html);
-                            {#$('#worker-from').attr('action', '/admin/edit_worker/').attr('method', 'patch')#}
-
                         }
                     },
                 });
@@ -421,7 +429,6 @@
         }
 
         function edit_worker() {
-
             window.event.preventDefault();
             {#var temp = $('#worker-from').serialize();#}
             $.ajax({
