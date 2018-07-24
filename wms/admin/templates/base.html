@@ -14,21 +14,103 @@
     {% endblock %}
 </head>
 <body>
-    {% block content %}
-
-    {% endblock %}
-    <!-- Mainly scripts -->
-    <script src="static/js/jquery-2.1.1.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
-    <script src="static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 
-    <!-- Custom and plugin javascript -->
-    <script src="static/js/inspinia.js"></script>
-    <script src="static/js/plugins/pace/pace.min.js"></script>
-    {% block extjs %}
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="logo-element">
+                        牛逼的劳务管理系统
+                    </div>
+                </li>
+                <li class="active">
+                    <a href="index.html"><i class="fa fa-user"></i>
+                        <span class="nav-label">用户管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li class="active"><a href="worker.html">
+                            <i class="fa fa-users"></i>&nbsp;工人管理</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="index.html"><i class="fa fa-paypal"></i>
+                        <span class="nav-label">项目管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="project.html">
+                            <i class="fa fa-shield"></i>&nbsp;工地管理</a>
+                        </li>
+                        <li><a href="#">
+                            <i class="fa fa-calendar"></i>&nbsp;工天管理</a>
+                        </li>
+                    </ul>
+                </li>
 
-    {% endblock %}
+                <li>
+                    <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">布局</span></a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
+                            class="fa fa-bars"></i>
+                    </a>
+                    <form role="search" class="navbar-form-custom" action="search_results.html">
+                        <div class="form-group">
+                            {#                            <input type="text" placeholder="Search for something..." class="form-control"#}
+                            {#                                   name="top-search" id="top-search">#}
+                        </div>
+                    </form>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">欢迎来到流弊的脑无管理系统</span>
+                    </li>
+
+                    <li>
+                        <a href="login.html">
+                            <i class="fa fa-sign-out"></i> 退出登录
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        {% block content %}
+
+        {% endblock %}
+    </div>
+</div>
+<div class="footer">
+    <div class="pull-right">
+        10GB of <strong>250GB</strong> Free.
+    </div>
+    <div>
+        <strong>Copyright</strong> ZDD Company &copy; 2018-2100
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="static/js/jquery-2.1.1.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+
+<!-- Custom and plugin javascript -->
+<script src="static/js/inspinia.js"></script>
+<script src="static/js/plugins/pace/pace.min.js"></script>
+{% block extjs %}
+
+{% endblock %}
 </body>
 </html>
