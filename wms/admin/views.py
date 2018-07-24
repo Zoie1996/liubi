@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, jsonify
 
 from wms import status_code
-from wms.admin.models import Worker, Profession
+from wms.admin.models import Worker, Profession, Project
 from . import admin
 
 
@@ -65,15 +65,24 @@ def del_worker(worker_id):
 
 @admin.route('/worker_info/<int:worker_id>', methods=['GET'])
 def worker_info(worker_id):
+    """
+    显示员工信息
+    :param worker_id:
+    :return:
+    """
     worker = Worker.query.get(worker_id)
     pro_name = Profession.query.get(worker.pro_id).name
     pros = Profession.query.all()
-    return jsonify({'code': status_code.OK, 'worker': worker.to_dict(), 'pro_name': pro_name,
+    return jsonify({'code': status_code.OK, 'worker': worker.to_dict(),
                     'pros': [pro.to_dict() for pro in pros]})
 
 
 @admin.route('/edit_worker/', methods=['POST'])
 def edit_worker():
+    """
+    修改员工信息
+    :return:
+    """
     data = request.form.to_dict()
     worker_id = data['id']
     worker = Worker.query.get(worker_id)
@@ -88,3 +97,21 @@ def edit_worker():
     worker.pro_id = data['pro_id']
     worker.add_update()
     return jsonify(code=status_code.OK)
+
+
+@admin.route('/project.html', methods=['GET'])
+def project():
+    if request.method == 'GET':
+        projects = Project.query.all()
+        return render_template('project.html', projects=projects)
+
+@admin.route('/add_project', methods=['POST'])
+def add_project():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        project = Project()
+        project.name = data['name']
+        project.address = data['address']
+        project.start_time = data['start_time']
+        project.add_update()
+        return redirect(url_for('admin.project'))
