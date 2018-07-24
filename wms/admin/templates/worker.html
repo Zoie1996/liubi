@@ -171,7 +171,7 @@
                                 </div>
 
                                 <div>
-                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit">
+                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs add-worker" type="submit">
                                         <strong>添加</strong></button>
                                 </div>
                             </form>
@@ -269,6 +269,7 @@
                                             id="edit_button" onclick="edit_worker()">
                                         <strong>保存</strong></button>
                                 </div>
+
                             </form>
                         </div>
                     </div>
@@ -288,7 +289,14 @@
     <script src="static/js/template.js"></script>
     <script>
         $(function () {
+            $('.add-worker').on('click', function () {
+                swal({
+                    title: "添加成功",
+                    // text: "小手一抖就打开了一个框",
+                    type: "success"
+                });
 
+            });
 
             $('.del-worker').on('click', function (evt) {
                 // 获取工人id
@@ -369,7 +377,6 @@
 
         function edit_worker() {
             window.event.preventDefault();
-            {#var temp = $('#worker-from').serialize();#}
             $.ajax({
                 url: '/admin/edit_worker/',
                 data: $('#worker-from').serialize(),
