@@ -85,6 +85,15 @@ class Project(db.Model, BaseModel):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)  # 工程id
     name = db.Column(db.String(20))  # 工程名
     address = db.Column(db.String(50))  # 工地所在地
+    status = db.Column(db.Integer, default=0)  # 默认 0 存在 1 删除
+    start_time = db.Column(db.DATETIME, default=datetime.now())
+    def to_dict(self):
+        return {
+            'id':self.id,
+            'name':self.name,
+            'address':self.address,
+            'start_time':self.start_time.strftime('%Y-%m-%d'),
+        }
 
 
 class Roster(db.Model, BaseModel):

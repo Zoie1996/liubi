@@ -1,3 +1,5 @@
+from time import sleep
+
 from flask import render_template, request, redirect, url_for, jsonify
 
 from wms import status_code
@@ -47,6 +49,7 @@ def add_worker():
         worker.salary = data['salary']
         worker.pro_id = data['pro_id']
         worker.add_update()
+        sleep(2)
         return redirect(url_for('admin.worker'))
 
 
@@ -101,12 +104,31 @@ def edit_worker():
 
 @admin.route('/project.html', methods=['GET'])
 def project():
+    """
+    显示工程页面
+    :return:
+    """
+    return render_template('project.html')
+
+
+@admin.route('/project/', methods=['GET'])
+def projects():
+    """
+    渲染工程页面信息
+    :return:
+    """
     if request.method == 'GET':
         projects = Project.query.all()
-        return render_template('project.html', projects=projects)
+        project_list = [project.to_dict() for project in projects]
+        return jsonify({'code': status_code.OK, 'projects': project_list})
+
 
 @admin.route('/add_project', methods=['POST'])
 def add_project():
+    """
+    添加工程
+    :return:
+    """
     if request.method == 'POST':
         data = request.form.to_dict()
         project = Project()
@@ -115,3 +137,27 @@ def add_project():
         project.start_time = data['start_time']
         project.add_update()
         return redirect(url_for('admin.project'))
+
+
+@admin.route('/project_info/<int:project_id>', methods=['GET'])
+def project_info(project_id):
+    """
+    获取员工信息
+    :param project_id:
+    :return:
+    """
+    if request.method == 'GET':
+        project = Project.query.get(project_id)
+        return jsonify({'code': status_code.OK, 'project': project.to_dict()})
+
+
+@admin.route('/edit_project/<int:project_id>', methods=['POST'])
+def edit_project(project_id):
+    if request.method == 'POST':
+        project = Project.query.get(project_id)
+        data = request.form.to_dict()
+        project.name = data['name']
+        project.address = data['address']
+        project.start_time = data['start_time']
+        project.add_update()
+        return jsonify(code=status_code.OK)

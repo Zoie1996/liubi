@@ -41,6 +41,7 @@
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
+                                {% if worker_list %}
                                 <tr>
                                     <th></th>
                                     <th>姓名</th>
@@ -53,6 +54,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+
                                 {% for worker in worker_list %}
                                     <tr>
                                         <td>
@@ -102,6 +104,9 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
+                                {% else %}
+                                <h2>暂无员工信息</h2>
+                                {% endif %}
                                 </tbody>
                             </table>
                         </div>

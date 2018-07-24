@@ -7,7 +7,7 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2><i class="fa fa-paypal"></i>&nbsp;项目管理</h2>
+            <h2><i class="fa fa-paypal"></i>&nbsp;工程管理</h2>
         </div>
         <div class="col-lg-2">
         </div>
@@ -46,44 +46,38 @@
                                     <th>项目名称</th>
                                     <th>项目地点</th>
                                     <th>开始时间</th>
-                                    {#<th>结束时间</th>#}
                                     <th>操作</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                {% for project in projects %}
+                                <tbody class="project-info-form">
+                                </tbody>
+
+                                {% raw %}
+                                <script id="project-info-temp" type="text/html">
+                                    {{ if projects }}
+                                    {{ each projects as project }}
                                     <tr>
                                         <td>
-                                            <input type="checkbox" checked class="i-checks" name="input[]">
                                         </td>
+                                        <td>{{ project.name }}</td>
+                                        <td>{{ project.address }}</td>
+                                        <td>{{ project.start_time }}</td>
                                         <td>
-                                            {{ project.name }}
-                                        </td>
-
-                                        <td>
-                                            {{ project.address }}
-                                        </td>
-                                        <td>
-                                            {{ project.start_time }}
-                                        </td>
-
-                                        <td>
-                                            <button type="button" pid="{{ project.id }}"
-                                                    class="btn btn-outline btn-primary btn-xs worker-info"
-                                                    data-toggle="modal" href="#worker-info-form">
-                                                详情
+                                            <button pid="{{ project.id }}"
+                                                    class="btn btn-outline btn-success btn-xs edit-project"
+                                                    data-toggle="modal" href="#edit-project-info">编辑
                                             </button>
                                             <button type="button" pid="{{ project.id }}"
-                                                    class="btn btn-outline btn-success btn-xs edit-worker"
-                                                    data-toggle="modal" href="#worker-info-form">编辑
-                                            </button>
-                                            <button type="button" pid="{{ project.id }}"
-                                                    class="btn btn-outline btn-danger btn-xs del-worker">删除
+                                                    class="btn btn-outline btn-danger btn-xs del-project">删除
                                             </button>
                                         </td>
                                     </tr>
-                                {% endfor %}
-                                </tbody>
+                                    {{ /each }}
+                                    {{ else }}
+                                    <h2>暂无工程信息</h2>
+                                    {{ /if }}
+                                </script>
+                                {% endraw %}
                             </table>
                         </div>
                     </div>
@@ -93,7 +87,7 @@
     </div>
 
 
-
+    {#添加工程弹框#}
     <div id="add-project-form" class="modal fade modal-status" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -113,9 +107,9 @@
                                            placeholder="请输入项目地址"
                                            class="form-control">
                                 </div>
-                                <div class="form-group"><label>项目开始时间</label>
-                                    <input type="text" class="form-control datetimepicker" name="start_time"
-                                           id="time_start"/>
+                                <div class="form-group"><label>工程开始时间</label>
+                                    <input type="text" class="form-control" name="start_time"
+                                           id="start_time"/>
                                 </div>
 
                                 <div>
@@ -130,15 +124,107 @@
         </div>
     </div>
 
+
+    {#编辑工程页面#}
+    <div id="edit-project-info" class="modal fade modal-status" aria-hidden="true">
+
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                        </button>
+                        <div class="col-sm-12"><h3 class="m-t-none m-b">修改工程信息</h3>
+
+                        </div>
+                        <div class="col-sm-12" id="info">
+
+                        </div>
+                        {% raw %}
+                        <script id="edit-info" type="text/html">
+                            <form role="form">
+                                <div class="form-group"><label>项目ID</label>
+                                    <input type="text" name="id"
+                                           value="{{ project.id }}"
+                                           class="form-control" readonly>
+                                </div>
+                                <div class="form-group"><label>项目名称</label>
+                                    <input type="text" name="name"
+                                           value="{{ project.name }}"
+                                           class="form-control">
+                                </div>
+                                <div class="form-group"><label>项目地址</label>
+                                    <input type="text" name="address"
+                                           value="{{ project.address }}"
+                                           class="form-control">
+                                </div>
+                                <div class="form-group"><label>工程开始时间</label>
+                                    <input type="text" class="form-control" name="start_time"
+                                           id="start_time" checked/>
+                                </div>
+
+                                <div>
+                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit">
+                                        <strong>保存</strong>
+                                    </button>
+                                </div>
+                            </form>
+                        </script>
+                        {% endraw %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
 {% endblock %}
 
 {% block extjs %}
     {{ super() }}
     <script src="static/laydate/laydate.js"></script>
+    <script src="static/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="static/js/template.js"></script>
     <script>
-    laydate.render({
-      elem: '#time_start' //指定元素
-    });
+        $(function () {
+            // 时间控件
+            laydate.render({
+                elem: '#start_time' //指定元素
+            });
+            // 编辑工程信息
+
+
+            $.get('/admin/project/', function (msg) {
+                if (msg.code == 200) {
+                    var project_html = template('project-info-temp', {
+                        projects: msg.projects,
+                    });
+                    $('.project-info-form').html(project_html);
+
+                }
+            });
+
+            $('.project-info-form').on('click', '.edit-project', function (evt) {
+                evt.preventDefault();
+                project_id = $(evt.target).attr('pid');
+
+                $.get('/admin/project_info/' + project_id, function (msg) {
+                    if (msg.code == 200) {
+                        var project_html = template('edit-info', {
+                            project: msg.project,
+                        });
+                        $('#info').html(project_html);
+                    }
+                });
+
+            });
+
+
+        });
+
     </script>
 
 {% endblock %}
