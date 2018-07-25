@@ -74,7 +74,6 @@ def worker_info(worker_id):
     :return:
     """
     worker = Worker.query.get(worker_id)
-    pro_name = Profession.query.get(worker.pro_id).name
     pros = Profession.query.all()
     return jsonify({'code': status_code.OK, 'worker': worker.to_dict(),
                     'pros': [pro.to_dict() for pro in pros]})
@@ -118,7 +117,7 @@ def projects():
     :return:
     """
     if request.method == 'GET':
-        projects = Project.query.all()
+        projects = Project.query.filter(Project.status == 0)
         project_list = [project.to_dict() for project in projects]
         return jsonify({'code': status_code.OK, 'projects': project_list})
 
@@ -142,7 +141,7 @@ def add_project():
 @admin.route('/project_info/<int:project_id>', methods=['GET'])
 def project_info(project_id):
     """
-    获取员工信息
+    获取工程信息
     :param project_id:
     :return:
     """
@@ -151,13 +150,30 @@ def project_info(project_id):
         return jsonify({'code': status_code.OK, 'project': project.to_dict()})
 
 
-@admin.route('/edit_project/<int:project_id>', methods=['POST'])
-def edit_project(project_id):
+@admin.route('/edit_project/', methods=['POST'])
+def edit_project():
+    """
+    编辑工程信息
+    :return:
+    """
     if request.method == 'POST':
-        project = Project.query.get(project_id)
         data = request.form.to_dict()
+        id = data['id']
+        project = Project.query.get(id)
         project.name = data['name']
         project.address = data['address']
         project.start_time = data['start_time']
         project.add_update()
         return jsonify(code=status_code.OK)
+
+
+@admin.route('/del_project/<int:project_id>', methods=['PATCH'])
+def del_project(project_id):
+    """
+    删除工程信息
+    :return:
+    """
+    project = Project.query.get(project_id)
+    project.status = 1
+    project.add_update()
+    return jsonify(code=status_code.OK)

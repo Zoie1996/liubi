@@ -6,6 +6,40 @@
     <link href="static/css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 {% endblock %}
+
+{% block nav %}
+    <li class="active">
+        <a href="index.html"><i class="fa fa-user"></i>
+            <span class="nav-label">用户管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li class="active"><a href="worker.html">
+                <i class="fa fa-users"></i>&nbsp;工人管理</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="index.html"><i class="fa fa-paypal"></i>
+            <span class="nav-label">工程管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li><a href="project.html">
+                <i class="fa fa-shield"></i>&nbsp;工地管理</a>
+            </li>
+            <li><a href="#">
+                <i class="fa fa-calendar"></i>&nbsp;工天管理</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">布局</span></a>
+    </li>
+
+{% endblock %}
+
+
 {% block content %}
 
     <div class="row wrapper border-bottom white-bg page-heading">
@@ -42,70 +76,70 @@
                             <table class="table table-striped">
                                 <thead>
                                 {% if worker_list %}
-                                <tr>
-                                    <th></th>
-                                    <th>姓名</th>
-                                    <th>性别</th>
-                                    <th>手机号</th>
-                                    <th>身份证号</th>
-                                    <th>银行卡号</th>
-                                    <th>工种</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                {% for worker in worker_list %}
                                     <tr>
-                                        <td>
-                                            <input type="checkbox" checked class="i-checks" name="input[]">
-                                        </td>
-                                        <td>
-                                            {{ worker.name }}
-                                        </td>
-                                        <td>
-                                            {% if worker.sex %}
-                                                男
-                                            {% else %}
-                                                女
-                                            {% endif %}
-
-                                        </td>
-                                        <td>
-                                            {{ worker.phone }}
-                                        </td>
-                                        <td>
-                                            {{ worker.id_card }}
-                                        </td>
-                                        <td>
-                                            {{ worker.bank_card_no }}
-                                        </td>
-                                        <td>
-                                            {% for pro in pros %}
-                                                {% if pro.id == worker.pro_id %}
-                                                    {{ pro.name }}
-                                                {% endif %}
-                                            {% endfor %}
-
-                                        </td>
-                                        <td>
-                                            <button type="button" wid="{{ worker.id }}"
-                                                    class="btn btn-outline btn-primary btn-xs worker-info"
-                                                    data-toggle="modal" href="#worker-info-form">
-                                                详情
-                                            </button>
-                                            <button type="button" wid="{{ worker.id }}"
-                                                    class="btn btn-outline btn-success btn-xs edit-worker"
-                                                    data-toggle="modal" href="#worker-info-form">编辑
-                                            </button>
-                                            <button type="button" wid="{{ worker.id }}"
-                                                    class="btn btn-outline btn-danger btn-xs del-worker">删除
-                                            </button>
-                                        </td>
+                                        <th></th>
+                                        <th>姓名</th>
+                                        <th>性别</th>
+                                        <th>手机号</th>
+                                        <th>身份证号</th>
+                                        <th>银行卡号</th>
+                                        <th>工种</th>
+                                        <th>操作</th>
                                     </tr>
-                                {% endfor %}
+                                    </thead>
+                                    <tbody>
+
+                                    {% for worker in worker_list %}
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" checked class="i-checks" name="input[]">
+                                            </td>
+                                            <td>
+                                                {{ worker.name }}
+                                            </td>
+                                            <td>
+                                                {% if worker.sex %}
+                                                    男
+                                                {% else %}
+                                                    女
+                                                {% endif %}
+
+                                            </td>
+                                            <td>
+                                                {{ worker.phone }}
+                                            </td>
+                                            <td>
+                                                {{ worker.id_card }}
+                                            </td>
+                                            <td>
+                                                {{ worker.bank_card_no }}
+                                            </td>
+                                            <td>
+                                                {% for pro in pros %}
+                                                    {% if pro.id == worker.pro_id %}
+                                                        {{ pro.name }}
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                            </td>
+                                            <td>
+                                                <button type="button" wid="{{ worker.id }}"
+                                                        class="btn btn-outline btn-primary btn-xs worker-info"
+                                                        data-toggle="modal" href="#worker-info-form">
+                                                    详情
+                                                </button>
+                                                <button type="button" wid="{{ worker.id }}"
+                                                        class="btn btn-outline btn-success btn-xs edit-worker"
+                                                        data-toggle="modal" href="#worker-info-form">编辑
+                                                </button>
+                                                <button type="button" wid="{{ worker.id }}"
+                                                        class="btn btn-outline btn-danger btn-xs del-worker">删除
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                 {% else %}
-                                <h2>暂无员工信息</h2>
+                                    <h2>暂无员工信息</h2>
                                 {% endif %}
                                 </tbody>
                             </table>

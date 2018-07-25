@@ -3,6 +3,44 @@
     项目管理
 {% endblock %}
 
+{% block extcss %}
+    <link href="static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+{% endblock %}
+
+{% block nav %}
+    <li>
+        <a href="index.html"><i class="fa fa-user"></i>
+            <span class="nav-label">用户管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li><a href="worker.html">
+                <i class="fa fa-users"></i>&nbsp;工人管理</a>
+            </li>
+        </ul>
+    </li>
+    <li class="active">
+        <a href="index.html"><i class="fa fa-paypal"></i>
+            <span class="nav-label">工程管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li><a href="project.html">
+                <i class="fa fa-shield"></i>&nbsp;工地管理</a>
+            </li>
+            <li><a href="#">
+                <i class="fa fa-calendar"></i>&nbsp;工天管理</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">布局</span></a>
+    </li>
+
+{% endblock %}
+
+
+
 {% block content %}
 
     <div class="row wrapper border-bottom white-bg page-heading">
@@ -126,7 +164,7 @@
 
 
     {#编辑工程页面#}
-    <div id="edit-project-info" class="modal fade modal-status" aria-hidden="true">
+    <div id="edit-project-info" class="modal fade" aria-hidden="true">
 
 
         <div class="modal-dialog">
@@ -143,29 +181,29 @@
                         </div>
                         {% raw %}
                         <script id="edit-info" type="text/html">
-                            <form role="form">
-                                <div class="form-group"><label>项目ID</label>
+                            <form role="form" id="project-form">
+                                <div class="form-group"><label>工程ID</label>
                                     <input type="text" name="id"
                                            value="{{ project.id }}"
                                            class="form-control" readonly>
                                 </div>
-                                <div class="form-group"><label>项目名称</label>
+                                <div class="form-group"><label>工程名称</label>
                                     <input type="text" name="name"
                                            value="{{ project.name }}"
                                            class="form-control">
                                 </div>
-                                <div class="form-group"><label>项目地址</label>
+                                <div class="form-group"><label>工程地址</label>
                                     <input type="text" name="address"
                                            value="{{ project.address }}"
                                            class="form-control">
                                 </div>
                                 <div class="form-group"><label>工程开始时间</label>
                                     <input type="text" class="form-control" name="start_time"
-                                           id="start_time" checked/>
+                                           id="edit_start_time" value="{{ project.start_time }}"/>
                                 </div>
 
                                 <div>
-                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit">
+                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs edit-button">
                                         <strong>保存</strong>
                                     </button>
                                 </div>
@@ -194,7 +232,6 @@
             laydate.render({
                 elem: '#start_time' //指定元素
             });
-            // 编辑工程信息
 
 
             $.get('/admin/project/', function (msg) {
@@ -215,15 +252,71 @@
                     if (msg.code == 200) {
                         var project_html = template('edit-info', {
                             project: msg.project,
+
                         });
                         $('#info').html(project_html);
+                        laydate.render({
+                            elem: '#edit_start_time' //指定元素
+                        });
                     }
+                });
+            });
+
+            $('#edit-project-info').on('click', '.edit-button', function (evt) {
+                window.event.preventDefault();
+                $.ajax({
+                    url: '/admin/edit_project/',
+                    data: $('#project-form').serialize(),
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (msg) {
+                        if (msg.code == 200) {
+                            swal({
+                                title: "修改成功",
+                                // text: "小手一抖就打开了一个框",
+                                type: "success"
+                            });
+                            window.setInterval(function () {
+                                location.href = '/admin/project.html';
+                            }, 1000);
+                        }
+                    }
+                });
+            });
+            $('.project-info-form').on('click', '.del-project', function (evt) {
+
+                // 获取工人id
+                project_id = $(evt.target).attr('pid');
+                // 显示删除成功的弹框
+                swal({
+                    title: "您确定要删除这条信息吗",
+                    text: "删除后将无法恢复，请谨慎操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "删除",
+                    closeOnConfirm: false
+                }, function () {
+                    $.ajax({
+                        url: '/admin/del_project/' + project_id,
+                        type: 'PATCH',
+                        dataType: 'json',
+                        success: function (msg) {
+                            if (msg.code == 200) {
+                                window.setInterval(function () {
+                                    location.href = '/admin/project.html';
+                                }, 600);
+                            }
+                        },
+                    });
+                    swal("删除成功！", "您已经成功删除了这条信息。", "success");
                 });
 
             });
 
 
         });
+
 
     </script>
 
