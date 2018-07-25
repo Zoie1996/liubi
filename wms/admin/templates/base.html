@@ -17,6 +17,8 @@
 
 
 <div id="wrapper">
+
+
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav metismenu" id="side-menu">
@@ -25,39 +27,16 @@
                         牛逼的劳务管理系统
                     </div>
                 </li>
-                <li class="active">
-                    <a href="index.html"><i class="fa fa-user"></i>
-                        <span class="nav-label">用户管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li class="active"><a href="worker.html">
-                            <i class="fa fa-users"></i>&nbsp;工人管理</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="index.html"><i class="fa fa-paypal"></i>
-                        <span class="nav-label">工程管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li><a href="project.html">
-                            <i class="fa fa-shield"></i>&nbsp;工地管理</a>
-                        </li>
-                        <li><a href="#">
-                            <i class="fa fa-calendar"></i>&nbsp;工天管理</a>
-                        </li>
-                    </ul>
-                </li>
 
-                <li>
-                    <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">布局</span></a>
-                </li>
+                {% block nav %}
+
+
+                {% endblock %}
             </ul>
 
         </div>
     </nav>
+
     <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -74,7 +53,7 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <span class="m-r-sm text-muted welcome-message">欢迎来到流弊的脑无管理系统</span>
+                        <span class="m-r-sm text-muted welcome-message">欢迎来到流弊的劳务系统</span>
                     </li>
 
                     <li>
@@ -86,6 +65,7 @@
             </nav>
         </div>
         {% block content %}
+
 
         {% endblock %}
     </div>
