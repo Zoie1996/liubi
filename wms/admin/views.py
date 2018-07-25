@@ -171,7 +171,6 @@ def edit_project():
 def del_project(project_id):
     """
     删除工程信息
-    :return:
     """
     project = Project.query.get(project_id)
     project.status = 1

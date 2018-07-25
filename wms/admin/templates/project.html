@@ -262,6 +262,7 @@
                 });
             });
 
+            // 修改工程页面弹窗
             $('#edit-project-info').on('click', '.edit-button', function (evt) {
                 window.event.preventDefault();
                 $.ajax({
@@ -283,8 +284,9 @@
                     }
                 });
             });
-            $('.project-info-form').on('click', '.del-project', function (evt) {
 
+            // 删除工程信息
+            $('.project-info-form').on('click', '.del-project', function (evt) {
                 // 获取工人id
                 project_id = $(evt.target).attr('pid');
                 // 显示删除成功的弹框

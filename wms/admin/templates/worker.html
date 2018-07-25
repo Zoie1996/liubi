@@ -232,10 +232,10 @@
                     <div class="row">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
                         </button>
-                        <div class="col-sm-12"><h3 class="m-t-none m-b">{{ worker.name }}信息</h3>
+                        <div class="col-sm-12"><h3 class="m-t-none m-b">{{ worker.name }}</h3>
                             <form class="form-horizontal" id="worker-from">
                                 <div class="form-group">
-                                    <label>ID</label>
+                                    <label>工人ID</label>
                                     <input type="text" class="form-control" name='id'
                                            value="{{ worker.id }}" readonly>
                                 </div>
@@ -384,7 +384,7 @@
                     },
                 });
             });
-
+            // 修改工人信息
             $('.edit-worker').on('click', function (evt) {
                 evt.preventDefault();
                 work_id = $(evt.target).attr('wid');
