@@ -1,0 +1,314 @@
+{% extends 'base.html' %}
+{% block title %}
+    首页
+{% endblock %}
+
+{% block extcss %}
+    <!-- FooTable -->
+    <link href="static/css/plugins/footable/footable.core.css" rel="stylesheet">
+    <link href="static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block nav %}
+    <li>
+        <a href="index.html"><i class="fa fa-user"></i>
+            <span class="nav-label">用户管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li class="active"><a href="worker.html">
+                <i class="fa fa-users"></i>&nbsp;工人管理</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="index.html"><i class="fa fa-paypal"></i>
+            <span class="nav-label">工程管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li><a href="project.html">
+                <i class="fa fa-shield"></i>&nbsp;工地管理</a>
+            </li>
+            <li><a href="roster.html">
+                <i class="fa fa-calendar"></i>&nbsp;工天管理</a>
+            </li>
+        </ul>
+    </li>
+    <li class="active">
+        <a href="index.html"><i class="fa fa-paypal"></i>
+            <span class="nav-label">借支管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li class="active"><a href="advances.html">
+                <i class="fa fa-shield"></i>&nbsp;出账管理</a>
+            </li>
+            <li><a href="#">
+                <i class="fa fa-calendar"></i>&nbsp;入账管理</a>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row wrapper border-bottom white-bg page-heading">
+
+        <div class="col-lg-10">
+
+            <h2><i class="fa fa-user"></i>&nbsp;出账管理</h2>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+    </div>
+
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <h2>借支登记表</h2>
+
+                    <div class="ibox-title">
+
+                        <div class="ibox-tools">
+
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">配置选项 1</a>
+                                </li>
+                                <li><a href="#">配置选项 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-5 m-b-xs">
+                                <a data-toggle="modal" class="btn btn-primary" href="#add-advances-form"><i
+                                        class="fa fa-plus"></i>&nbsp;添加</a>
+                            </div>
+
+                            <div class="col-sm-2 m-b-xs">
+                                <!--放置按钮-->
+                            </div>
+
+                            <div class="input-group col-sm-3 m-b-xs" style="margin-top: 5px">
+
+                                <input type="text" placeholder="Search" class="input-sm form-control">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary"> Go!</button>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="ibox-content">
+
+
+                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8">
+                            <thead>
+                            <tr>
+                                <th data-toggle="true">姓名</th>
+                                <th data-hide="all" class="footable-sortable"></th>
+                            </tr>
+                            </thead>
+                            <tbody class="worker-advance">
+
+                            </tbody>
+                            {% raw %}
+                            <script id='advances-temp' type="text/html">
+                                {{ if workers }}
+                                {{ each workers as worker }}
+
+                                <tr class="footable-even" style="display: table-row;">
+                                    <td class="footable-visible footable-last-column footable-first-column"><span
+                                            class="footable-toggle"></span><font style="vertical-align: inherit;"><font
+                                            style="vertical-align: inherit;">{{ worker.name }}</font></font></td>
+                                    <td style="display: none;">
+                                        <div>
+                                            <table class="table table-striped">
+                                                <tbody>
+                                                <tr>
+                                                    <th><font style="vertical-align: inherit;"><font
+                                                            style="vertical-align: inherit;">金额</font></font></th>
+                                                    <th><font style="vertical-align: inherit;"><font
+                                                            style="vertical-align: inherit;">借款时间</font></font></th>
+                                                    <th><font style="vertical-align: inherit;"><font
+                                                            style="vertical-align: inherit;">签字</font></font></th>
+                                                    <th><font style="vertical-align: inherit;"><font
+                                                            style="vertical-align: inherit;">备注</font></font></th>
+                                                </tr>
+
+
+                                                {{ each advances as advance }}
+                                                {{ if worker.id == advance.worker_id }}
+                                                <tr>
+                                                    <td><font style="vertical-align: inherit;"><font
+                                                            style="vertical-align: inherit;">{{ advance.money }}</font></font>
+                                                    </td>
+                                                    <td><font style="vertical-align: inherit;"><font
+                                                            style="vertical-align: inherit;">{{ advance.time
+                                                        }}</font></font>
+                                                    </td>
+                                                    <td><font style="vertical-align: inherit;"><font
+                                                            style="vertical-align: inherit;">{{ advance.signature
+                                                        }}</font></font>
+                                                    </td>
+                                                    <td><font style="vertical-align: inherit;"><font
+                                                            style="vertical-align: inherit;">{{ advance.remark }}</font></font>
+                                                    </td>
+                                                </tr>
+                                                {{ /if }}
+                                                {{ /each }}
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{ /each }}
+                                {{ else }}
+                                <h3>暂无预支记录</h3>
+                                {{ /if }}
+                            </script>
+                            {% endraw %}
+
+
+                            <tfoot>
+                            <tr>
+                                <td colspan="5">
+                                    <ul class="pagination pull-right"></ul>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    {#添加借支弹框#}
+    <div id="add-advances-form" class="modal fade modal-status" aria-hidden="true" style="margin-top: 17px">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                        </button>
+                        <div class="col-sm-12"><h2 class="m-t-none m-b">添加借支信息</h2>
+                            <form role="form" method="post" id='advance-from' action="/admin/add_advances">
+                                <div class="form-group">
+                                    <label>姓名 &nbsp;
+                                        <select name="worker_id" id="advances-worker-id">
+                                        </select>
+                                    </label>
+                                    <a  href="/admin/worker.html">没有找到名字? 点击这里添加</a>
+                                </div>
+                                <div class="form-group"><label>金额</label>
+                                    <input type="text" name="money"
+                                           placeholder="请输入金额"
+                                           class="form-control">
+                                </div>
+                                <div class="form-group"><label>借款时间</label>
+                                    <input type="text" class="form-control" name="time" id="time"/>
+                                </div>
+                                <div class="form-group"><label>经办人签字</label>
+                                    <input type="text" class="form-control" name="signature"/>
+                                </div>
+                                <div class="form-group"><label>借款方式</label>
+                                    <input type="text" class="form-control" name="mode"/>
+                                </div>
+                                <div class="form-group"><label>备注</label>
+                                    <input type="text" class="form-control" name="remark"/>
+                                </div>
+
+
+                                <div>
+                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit">
+                                        <strong>添加</strong></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="footer">
+        <div class="pull-right">
+            10GB of <strong>250GB</strong> Free.
+        </div>
+        <div>
+            <strong>Copyright</strong> ZDD Company &copy; 2018-2100
+        </div>
+    </div>
+{% endblock %}
+
+{% block extjs %}
+    {{ super() }}
+    <!-- FooTable -->
+    <script src="static/js/plugins/footable/footable.all.min.js"></script>
+    <script src="static/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            // 添加
+              $('.add-worker').on('click', function () {
+                swal({
+                    title: "添加成功",
+                    // text: "小手一抖就打开了一个框",
+                    type: "success"
+                });
+
+            });
+
+            $.get('/admin/show_advances', function (msg) {
+                if (msg.code == 200) {
+                    var advances_html = template('advances-temp', {
+                        workers: msg.workers,
+                        advances: msg.advances
+                    });
+                    $('.worker-advance').html(advances_html);
+                    $('.footable').footable();
+                }
+            });
+
+            $.get('/admin/add_advances', function (msg) {
+                if (msg.code == 200) {
+                    workers = msg.workers;
+                    option_html = '';
+                    for (i = 0; i < workers.length; i++) {
+                        option_html += "<option value='" + workers[i].id + "' selected>" + workers[i].name + "</option>"
+                    }
+                    $('#advances-worker-id').html(option_html);
+
+                }
+            });
+
+        });
+
+    </script>
+{% endblock %}

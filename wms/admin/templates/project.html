@@ -25,17 +25,29 @@
             <span class="fa arrow"></span>
         </a>
         <ul class="nav nav-second-level">
-            <li><a href="project.html">
+            <li class="active"><a href="project.html">
                 <i class="fa fa-shield"></i>&nbsp;工地管理</a>
             </li>
-            <li><a href="#">
+            <li><a href="roster.html">
                 <i class="fa fa-calendar"></i>&nbsp;工天管理</a>
             </li>
         </ul>
     </li>
     <li>
-        <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">布局</span></a>
+        <a href="index.html"><i class="fa fa-paypal"></i>
+            <span class="nav-label">借支管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li><a href="advances.html">
+                <i class="fa fa-shield"></i>&nbsp;出账管理</a>
+            </li>
+            <li><a href="#">
+                <i class="fa fa-calendar"></i>&nbsp;入账管理</a>
+            </li>
+        </ul>
     </li>
+
 
 {% endblock %}
 
@@ -133,7 +145,7 @@
                     <div class="row">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
                         </button>
-                        <div class="col-sm-12"><h3 class="m-t-none m-b">添加项目信息</h3>
+                        <div class="col-sm-12"><h2 class="m-t-none m-b">添加项目信息</h2>
                             <form role="form" method="post" action="/admin/add_project">
                                 <div class="form-group"><label>项目名称</label>
                                     <input type="text" name="name"
@@ -173,7 +185,7 @@
                     <div class="row">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
                         </button>
-                        <div class="col-sm-12"><h3 class="m-t-none m-b">修改工程信息</h3>
+                        <div class="col-sm-12"><h2 class="m-t-none m-b">修改工程信息</h2>
 
                         </div>
                         <div class="col-sm-12" id="info">
@@ -218,14 +230,20 @@
 
     </div>
 
-
+<div class="footer">
+    <div class="pull-right">
+        10GB of <strong>250GB</strong> Free.
+    </div>
+    <div>
+        <strong>Copyright</strong> ZDD Company &copy; 2018-2100
+    </div>
+</div>
 {% endblock %}
 
 {% block extjs %}
     {{ super() }}
     <script src="static/laydate/laydate.js"></script>
     <script src="static/js/plugins/sweetalert/sweetalert.min.js"></script>
-    <script src="static/js/template.js"></script>
     <script>
         $(function () {
             // 时间控件

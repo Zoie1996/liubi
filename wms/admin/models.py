@@ -27,7 +27,6 @@ class BaseModel(object):
             db.session.rollback()
 
 
-
 class Profession(db.Model, BaseModel):
     """工种"""
     __tablename__ = 'profession'
@@ -55,7 +54,7 @@ class Worker(db.Model, BaseModel):
     salary = db.Column(db.Integer)  # 薪资
     bank_card_no = db.Column(db.String(20))  # 银行卡号
     bank_card_name = db.Column(db.String(10))  # 持卡人姓名
-    status = db.Column(db.Integer, default=0)  #  默认 0 存在 1 删除
+    status = db.Column(db.Integer, default=0)  # 默认 0 存在 1 删除
     pro_id = db.Column(db.Integer, db.ForeignKey('profession.id'))  # 工种
 
     roster = db.relationship('Roster', backref='worker', lazy=True)  # 工天
@@ -87,12 +86,13 @@ class Project(db.Model, BaseModel):
     address = db.Column(db.String(50))  # 工地所在地
     status = db.Column(db.Integer, default=0)  # 默认 0 存在 1 删除
     start_time = db.Column(db.DATETIME, default=datetime.now())
+
     def to_dict(self):
         return {
-            'id':self.id,
-            'name':self.name,
-            'address':self.address,
-            'start_time':self.start_time.strftime('%Y-%m-%d'),
+            'id': self.id,
+            'name': self.name,
+            'address': self.address,
+            'start_time': self.start_time.strftime('%Y-%m-%d'),
         }
 
 
@@ -114,10 +114,21 @@ class Advances(db.Model, BaseModel):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)  # 借支id
     money = db.Column(db.Integer)  # 金额
     signature = db.Column(db.String(256))  # 经办人签字
-    time = db.Column(db.DATETIME)  # 借款时间
+    time = db.Column(db.DATETIME, default=datetime.now())  # 借款时间
     mode = db.Column(db.String(20))  # 借款方式 现金/微信转账等
-    remark = db.Column(db.Text)  # 备注
+    remark = db.Column(db.Text, default=None)  # 备注
     worker_id = db.Column(db.Integer, db.ForeignKey('worker.id'))
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'money': self.money,
+            'signature': self.signature,
+            'time': self.time.strftime('%Y-%m-%d'),
+            'mode': self.mode,
+            'remark': self.remark,
+            'worker_id': self.worker_id
+        }
 
 
 class Income(db.Model, BaseModel):

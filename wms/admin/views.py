@@ -3,7 +3,7 @@ from time import sleep
 from flask import render_template, request, redirect, url_for, jsonify
 
 from wms import status_code
-from wms.admin.models import Worker, Profession, Project
+from wms.admin.models import Worker, Profession, Project, Advances
 from . import admin
 
 
@@ -14,6 +14,9 @@ def index():
     :return:
     """
     return render_template('index.html')
+
+
+""" 工人功能开始 """
 
 
 @admin.route('/worker.html', methods=['GET'])
@@ -34,7 +37,7 @@ def worker():
 def add_worker():
     """
     添加员工
-    :return:
+    :return: 重定向到员工首页
     """
     if request.method == 'POST':
         worker = Worker()
@@ -101,7 +104,12 @@ def edit_worker():
     return jsonify(code=status_code.OK)
 
 
-@admin.route('/project.html', methods=['GET'])
+""" 工人功能结束 """
+
+""" 工程功能开始 """
+
+
+@admin.route('/project.html')
 def project():
     """
     显示工程页面
@@ -176,3 +184,61 @@ def del_project(project_id):
     project.status = 1
     project.add_update()
     return jsonify(code=status_code.OK)
+
+
+""" 工程功能结束 """
+
+""" 工天功能开始 """
+@admin.route('/roster.html', methods=['GET'])
+def roster():
+    return render_template('roster.html')
+""" 工天功能结束 """
+
+
+""" 借支管理 """
+@admin.route('/advances.html', methods=['GET'])
+def advances():
+    """
+    借支界面
+    :return:
+    """
+    if request.method == 'GET':
+        # 获取工种信息, 用于添加员工渲染页面
+        pros = Profession.query.all()
+        return render_template('advances.html',pros=pros)
+
+
+@admin.route('/show_advances', methods=['GET'])
+def show_advances():
+    if request.method == 'GET':
+        advances = Advances.query.all()
+        workers = []
+        for advance in advances:
+            worker = advance.worker
+            if worker not in workers:
+                workers.append(worker)
+        # 异步请求
+        worker_list = [worker.to_dict() for worker in workers]
+        advance_list = [advance.to_dict() for advance in advances]
+        return jsonify({'code': status_code.OK, 'workers': worker_list, 'advances': advance_list})
+
+
+@admin.route('/add_advances', methods=['GET', 'POST'])
+def add_advances():
+    if request.method == 'GET':
+        workers = Worker.query.filter_by(status=0)
+        worker_list = [worker.to_dict() for worker in workers]
+        return jsonify({'code': status_code.OK, 'workers': worker_list})
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        advances = Advances()
+        advances.money = data['money']
+        advances.time = data['time']
+        advances.signature = data['signature']
+        advances.mode = data['mode']
+        advances.remark = data['remark']
+        advances.worker_id = data['worker_id']
+        advances.add_update()
+        return jsonify(code=status_code.OK)
+
+

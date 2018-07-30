@@ -154,6 +154,7 @@
 }
 .footable-row-detail-inner {
   display: table;
+  width: 100%;
 }
 .footable-row-detail-row {
   display: table-row;

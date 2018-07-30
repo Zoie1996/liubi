@@ -3,10 +3,64 @@
     首页
 {% endblock %}
 
+{% block nav %}
+
+    <li>
+        <a href="index.html"><i class="fa fa-user"></i>
+            <span class="nav-label">用户管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li><a href="worker.html">
+                <i class="fa fa-users"></i>&nbsp;工人管理</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="index.html"><i class="fa fa-paypal"></i>
+            <span class="nav-label">工程管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li><a href="project.html">
+                <i class="fa fa-shield"></i>&nbsp;工地管理</a>
+            </li>
+            <li><a href="roster.html">
+                <i class="fa fa-calendar"></i>&nbsp;工天管理</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="index.html"><i class="fa fa-paypal"></i>
+            <span class="nav-label">借支管理</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="nav nav-second-level">
+            <li><a href="advances.html">
+                <i class="fa fa-shield"></i>&nbsp;出账管理</a>
+            </li>
+            <li><a href="#">
+                <i class="fa fa-calendar"></i>&nbsp;入账管理</a>
+            </li>
+        </ul>
+    </li>
+
+
+
+{% endblock %}
+
+
 {% block content %}
 
 
-
+    <div class="footer">
+        <div class="pull-right">
+            10GB of <strong>250GB</strong> Free.
+        </div>
+        <div>
+            <strong>Copyright</strong> ZDD Company &copy; 2018-2100
+        </div>
+    </div>
 {% endblock %}
 
 {% block extjs %}
