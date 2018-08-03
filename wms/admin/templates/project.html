@@ -315,7 +315,8 @@
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "删除",
-                    closeOnConfirm: false
+                    closeOnConfirm: false,
+                    cancelButtonText: '取消'
                 }, function () {
                     $.ajax({
                         url: '/admin/del_project/' + project_id,

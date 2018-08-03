@@ -16,7 +16,7 @@ class Config(object):
     SECRET_KEY = 'ix4En7l1Hau10aPq8kv8tuzcVl1s2Zo6eA+5+R+CXor8G3Jo0IJvcj001jz3XuXl'
 
     # flask-sqlalchemy使用的参数
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@172.20.10.3:3306/wms?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@localhost:3306/wms?charset=utf8'
     # 追踪数据库的修改行为，如果不设置会报警告，不影响代码的执行
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     # 显示sql语句

@@ -3,7 +3,7 @@ from time import sleep
 from flask import render_template, request, redirect, url_for, jsonify
 
 from wms import status_code
-from wms.admin.models import Worker, Profession, Project, Advances
+from wms.admin.models import Worker, Profession, Project, Advances, Roster
 from . import admin
 
 
@@ -189,13 +189,61 @@ def del_project(project_id):
 """ 工程功能结束 """
 
 """ 工天功能开始 """
+
+
 @admin.route('/roster.html', methods=['GET'])
 def roster():
     return render_template('roster.html')
+
+
+@admin.route('/roster_list.html', methods=['GET'])
+def roster_list():
+    rosters = Roster.query.filter(Roster.is_del == 0)
+    roster_dict = {}
+    for roster in rosters:
+        time_str = roster.time.strftime('%Y-%m-%d')
+        if time_str in roster_dict:
+            roster_temp = roster_dict[time_str]
+            roster_temp.append(roster.to_dict())
+            roster_dict[time_str] = roster_temp
+        else:
+            roster_dict[time_str] = [roster.to_dict(), ]
+    return jsonify({'code': status_code.OK, 'rosters': roster_dict})
+
+
+@admin.route('/roster_info/<int:roster_id>', methods=['GET'])
+def roster_info(roster_id):
+    roster = Roster.query.get(roster_id)
+    return jsonify({'code': status_code.OK, 'roster': roster.to_dict()})
+
+
+@admin.route('/edit_roster/', methods=['POST'])
+def edit_roster():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        id = data['id']
+        roster = Roster.query.get(id)
+        roster.work_hour = data['work_hour']
+        roster.work_overtime = data['work_overtime']
+        roster.remark = data['remark']
+        roster.add_update()
+        return jsonify(code=status_code.OK)
+
+
+
+@admin.route('/del_roster/<int:roster_id>', methods=['PATCH'])
+def del_roster(roster_id):
+    roster = Roster.query.get(roster_id)
+    roster.is_del = 1
+    roster.add_update()
+    return jsonify(code=status_code.OK)
+
+
 """ 工天功能结束 """
 
-
 """ 借支管理 """
+
+
 @admin.route('/advances.html', methods=['GET'])
 def advances():
     """
@@ -205,7 +253,7 @@ def advances():
     if request.method == 'GET':
         # 获取工种信息, 用于添加员工渲染页面
         pros = Profession.query.all()
-        return render_template('advances.html',pros=pros)
+        return render_template('advances.html', pros=pros)
 
 
 @admin.route('/show_advances', methods=['GET'])
@@ -240,5 +288,3 @@ def add_advances():
         advances.worker_id = data['worker_id']
         advances.add_update()
         return jsonify(code=status_code.OK)
-
-

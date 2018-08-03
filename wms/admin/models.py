@@ -104,7 +104,20 @@ class Roster(db.Model, BaseModel):
     work_hour = db.Column(db.Float, default=10)  # 工时
     work_overtime = db.Column(db.Float)  # 加班工时
     time = db.Column(db.DATETIME)  # 登记时间
+    remark = db.Column(db.Text, default=None)  # 备注
     work_id = db.Column(db.Integer, db.ForeignKey('worker.id'))
+    is_del = db.Column(db.Integer, default=0)  # 默认 0 存在 1 删除
+
+    def to_dict(self):
+        worker = Worker.query.get(self.work_id)
+        return {
+            'id': self.id,
+            'work_hour': self.work_hour,
+            'work_overtime': self.work_overtime,
+            'remark': self.remark,
+            'worker_name': worker.name,
+            'time': self.time.strftime('%Y-%m-%d'),
+        }
 
 
 class Advances(db.Model, BaseModel):
